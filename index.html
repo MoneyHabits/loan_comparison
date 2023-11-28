@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="index.js"></script>
+    <fieldset>
+        <legend>Lån Information</legend>
+        <label for="balance">Nuværende Gæld</label>
+        <input type="number" id="balance" name="balance" autofocus placeholder="0" required><br><br>
+        <label for="aop">ÅOP i procent</label>
+        <input type="number" id="aop" name="aop" placeholder="0" required><br><br>
+        <label for="payment_frequency">Betalingsfrekvens</label>
+        <select id="payment_frequency">
+            <option value="0">Ugentlig</option>
+            <option value="1">Månedlig</option>
+            <option value="3">Kvartal</option>
+            <option value="12">Årlig</option>
+        </select><br><br>
+        <label for="payment_amount">Minimumsbetaling</label>
+        <input type="number" id="payment_amount" name="payment_amount" placeholder="0" required><br><br>
+        <label for="payment_date">Næste Betalingsdato</label>
+        <input type="date" id="payment_date" name="payment_date" placeholder="0" required><br><br>
+        <input type="button" value="Beregn Betalingsprofil" onclick="generate_loan_information()">
+    </fieldset><br><br>
+    <pre id="payment_profile">
+
+    </pre>
+
+</body>
+</html>
+
