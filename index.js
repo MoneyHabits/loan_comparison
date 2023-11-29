@@ -43,27 +43,36 @@ class LoanInformation {
      * @returns {PaymentProfile}
      */
     _get_payment_profile() {
-        let amount = this.payment_amount;
-        let balance = this.balance;
-        let period_ir = this._period_efficient_rate();
+        let amount = +this.payment_amount;
+        let balance = +this.balance;
+        let period_ir = +this._period_efficient_rate();
         let principal_payment = 0;
         let payment_profile = [];
 
         let i = 0;
         while (balance > 0) {
             let interest = balance * period_ir;
-            console.log(interest)
             principal_payment = amount - interest;
             if (principal_payment < 0) {
                 throw Error("Loan will never be repaid");
             };
-            let payment_date = get_payment_days(this.next_payment_date, i, this.payment_frequency);
-            payment_profile.push({
-                    "balance": balance,
-                    "interest": interest,
-                    "principal_payment": principal_payment,
-                    "payment_date": payment_date
-            });
+
+            let payment_date;
+            if (this.payment_frequency == PaymentFrequency.Weekly) {
+                payment_date = this.next_payment_date.addDays(i * 7);
+            }
+            else {
+                payment_date = this.next_payment_date.addMonths(i * this.payment_frequency);
+                console.log(payment_date);
+            }
+            let payment = {
+                "balance": balance,
+                "interest": interest,
+                "principal_payment": principal_payment,
+                "payment_date": payment_date.toString()
+            };
+            console.log(payment);
+            payment_profile.push(payment);
             balance = balance - principal_payment;
             i++;
         }
@@ -94,12 +103,7 @@ class LoanInformation {
  */
 const get_payment_days = (next_payment_date, iteration, payment_frequency) => {
     next_payment_date = next_payment_date;
-    if (this.payment_frequency == PaymentFrequency.Weekly) {
-        return next_payment_date.addDays(iteration * 7);
-    }
-    else {
-        return next_payment_date.addMonths(iteration * payment_frequency);
-    }
+    
 }
 
 
@@ -142,6 +146,5 @@ const generate_loan_information = () => {
     let payment_amount = document.getElementById("payment_amount").value;
     let next_payment_date = new Date(document.getElementById("payment_date").value);
     let li = new LoanInformation(balance, aop, payment_frequency, payment_amount, next_payment_date);
-
     document.getElementById("payment_profile").textContent = JSON.stringify(li.payment_profile);
 }
