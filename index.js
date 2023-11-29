@@ -52,7 +52,7 @@ class LoanInformation {
         let i = 0;
         while (balance > 0) {
             let interest = balance * period_ir;
-            principal_payment = amount - interest;
+            principal_payment = Math.min(amount - interest, balance);
             if (principal_payment < 0) {
                 throw Error("Loan will never be repaid");
             };
@@ -63,17 +63,15 @@ class LoanInformation {
             }
             else {
                 payment_date = this.next_payment_date.addMonths(i * this.payment_frequency);
-                console.log(payment_date);
             }
+            balance = balance - principal_payment;
             let payment = {
                 "balance": balance,
                 "interest": interest,
                 "principal_payment": principal_payment,
                 "payment_date": payment_date.toDateString()
             };
-            console.log(payment);
             payment_profile.push(payment);
-            balance = balance - principal_payment;
             i++;
         }
 
@@ -162,37 +160,34 @@ const generate_principal_chart = (data) => {
             label: 'Hovedstol',
             data: data.map(row => row.balance),
             borderWidth: 1,
-            yAxisId: 'y2'
+            fill: true
         },
         {
             label: 'Afdrag',
             data: data.map(row => row.principal_payment),
             borderWidth: 1,
-            yAxisId: 'y'
+            fill: true
         },
         {
             label: 'Rente',
             data: data.map(row => row.interest),
             borderWidth: 1,
-            yAxisId: 'y'
+            fill: true
         }]
         },
         options: {
-        scales: {
-            y: {
-                type: "linear",
-                beginAtZero: true,
-                stacked: true
-            },
-            y2: {
-                type: "linear",
-                beginAtZero: true
-            },
-            x: {
-                stacked: true
+            scales: {
+                y: {
+                    type: "linear",
+                    beginAtZero: true,
+                    stacked: true,
+                    position: "left", 
+                    drawOnChartArea: false
+                },
+                x: {
+                    stacked: true
+                }
             }
-
-        }
         }
     });
 }
