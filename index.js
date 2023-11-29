@@ -54,7 +54,8 @@ class LoanInformation {
             let interest = balance * period_ir;
             principal_payment = Math.min(amount - interest, balance);
             if (principal_payment < 0) {
-                throw Error("Loan will never be repaid");
+                alert("Lånet vil ikke blive tilbagebetalt, og kan derfor ikke beregne låne forløb");
+
             };
 
             let payment_date = new Date(this.next_payment_date);
