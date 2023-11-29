@@ -57,12 +57,12 @@ class LoanInformation {
                 throw Error("Loan will never be repaid");
             };
 
-            let payment_date;
+            let payment_date = new Date(this.next_payment_date);
             if (this.payment_frequency == PaymentFrequency.Weekly) {
-                payment_date = this.next_payment_date.addDays(i * 7);
+                payment_date = payment_date.addDays(i * 7);
             }
             else {
-                payment_date = this.next_payment_date.addMonths(i * this.payment_frequency);
+                payment_date = payment_date.addMonths(i * this.payment_frequency);
             }
             balance = balance - principal_payment;
             let payment = {
@@ -148,11 +148,14 @@ const generate_loan_information = () => {
     //document.getElementById("payment_profile").textContent = JSON.stringify(li.payment_profile);
 
 }
-
-const generate_principal_chart = (data) => {
+let chart;
+const generate_principal_chart = ( data) => {
 
     const ctx = document.getElementById('principal');
-    new Chart(ctx, {
+    if (chart) {
+        chart.destroy();
+    }
+    chart = new Chart(ctx, {
         type: 'bar',
         data: {
         labels: data.map(row => row.payment_date),
