@@ -190,6 +190,15 @@ const generate_principal_chart = ( data) => {
                 x: {
                     stacked: true
                 }
+            },
+            plugins: {
+                legend: {
+                    position: "bottom"
+                },
+                title: {
+                    display: true,
+                    text: "Låneforløb"
+                }
             }
         }
     });
