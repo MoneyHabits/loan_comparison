@@ -6,8 +6,9 @@
     <title>Document</title>
 </head>
 <body>
-    <script src="index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="index.js"></script>
     <fieldset>
         <legend>Lån Information</legend>
         <label for="balance">Nuværende Gæld</label>
@@ -27,37 +28,15 @@
         <input type="date" id="payment_date" name="payment_date" placeholder="0" required><br><br>
         <input type="button" value="Beregn Betalingsprofil" onclick="generate_loan_information()">
     </fieldset><br><br>
-    <pre id="payment_profile">
-
-    </pre>
 
 
     <div>
-        <canvas id="myChart"></canvas>
+        <canvas id="principal"></canvas>
+    </div>
+    <div>
+        <canvas id="payments"></canvas>
     </div>
     
-    <script>
-        const ctx = document.getElementById('myChart');
-        
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-            datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
-                borderWidth: 1
-            }]
-            },
-            options: {
-            scales: {
-                y: {
-                beginAtZero: true
-                }
-            }
-            }
-        });
-    </script>
 
 </body>
 </html>

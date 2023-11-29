@@ -69,7 +69,7 @@ class LoanInformation {
                 "balance": balance,
                 "interest": interest,
                 "principal_payment": principal_payment,
-                "payment_date": payment_date.toString()
+                "payment_date": payment_date.toDateString()
             };
             console.log(payment);
             payment_profile.push(payment);
@@ -146,5 +146,53 @@ const generate_loan_information = () => {
     let payment_amount = document.getElementById("payment_amount").value;
     let next_payment_date = new Date(document.getElementById("payment_date").value);
     let li = new LoanInformation(balance, aop, payment_frequency, payment_amount, next_payment_date);
-    document.getElementById("payment_profile").textContent = JSON.stringify(li.payment_profile);
+    generate_principal_chart(li.payment_profile);
+    //document.getElementById("payment_profile").textContent = JSON.stringify(li.payment_profile);
+
+}
+
+const generate_principal_chart = (data) => {
+
+    const ctx = document.getElementById('principal');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+        labels: data.map(row => row.payment_date),
+        datasets: [{
+            label: 'Hovedstol',
+            data: data.map(row => row.balance),
+            borderWidth: 1,
+            yAxisId: 'y2'
+        },
+        {
+            label: 'Afdrag',
+            data: data.map(row => row.principal_payment),
+            borderWidth: 1,
+            yAxisId: 'y'
+        },
+        {
+            label: 'Rente',
+            data: data.map(row => row.interest),
+            borderWidth: 1,
+            yAxisId: 'y'
+        }]
+        },
+        options: {
+        scales: {
+            y: {
+                type: "linear",
+                beginAtZero: true,
+                stacked: true
+            },
+            y2: {
+                type: "linear",
+                beginAtZero: true
+            },
+            x: {
+                stacked: true
+            }
+
+        }
+        }
+    });
 }
